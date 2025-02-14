@@ -4,15 +4,16 @@
   "description": "Fork of Microsoft's deprecated CodePush service cli",
   "main": "./script/cli.js",
   "scripts": {
-    "start": "node ./bin/script/cli.js",
+    "start": "node ./bin/cli.js",
     "build": "tsc",
     "prettier": "prettier --write \"./**/*.ts\"",
     "lint": "npx eslint ./script/**/*.ts",
     "lint:fix": "npx eslint ./script/**/*.ts --fix",
-    "release": "release-it"
+    "release": "release-it",
+    "build-and-release": "npm run build && npm run release"
   },
   "bin": {
-    "code-push": "./bin/script/cli.js"
+    "code-push": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
