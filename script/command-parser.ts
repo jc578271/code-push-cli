@@ -9,7 +9,7 @@ import parseDuration = require("parse-duration");
 
 const packageJson = require("../../package.json");
 const ROLLOUT_PERCENTAGE_REGEX: RegExp = /^(100|[1-9][0-9]|[1-9])%?$/;
-const USAGE_PREFIX = "Usage: code-push-standalone";
+const USAGE_PREFIX = "Usage: code-push";
 
 // Command categories are:  access-key, app, release, deployment, deployment-key, login, logout, register
 let isValidCommandCategory = false;
@@ -794,15 +794,14 @@ yargs
         alias: "pod",
         default: null,
         demand: false,
-        description:  "Path to the cocopods config file (iOS only).",
+        description: "Path to the cocopods config file (iOS only).",
         type: "string",
       })
       .option("extraHermesFlags", {
         alias: "hf",
         default: [],
         demand: false,
-        description:
-          "Flags that get passed to Hermes, JavaScript to bytecode compiler. Can be specified multiple times.",
+        description: "Flags that get passed to Hermes, JavaScript to bytecode compiler. Can be specified multiple times.",
         type: "array",
       })
       .option("privateKeyPath", {
@@ -823,14 +822,16 @@ yargs
         alias: "xt",
         default: undefined,
         demand: false,
-        description: "Name of target (PBXNativeTarget) which specifies the binary version you want to target this release at (iOS only)",
+        description:
+          "Name of target (PBXNativeTarget) which specifies the binary version you want to target this release at (iOS only)",
         type: "string",
       })
       .option("buildConfigurationName", {
         alias: "c",
         default: undefined,
         demand: false,
-        description: "Name of build configuration which specifies the binary version you want to target this release at. For example, 'Debug' or 'Release' (iOS only)",
+        description:
+          "Name of build configuration which specifies the binary version you want to target this release at. For example, 'Debug' or 'Release' (iOS only)",
         type: "string",
       })
       .check((argv: any, aliases: { [aliases: string]: string }): any => {
@@ -1053,10 +1054,9 @@ export function createCommand(): cli.ICommand {
 
               deploymentAddCommand.appName = arg2;
               deploymentAddCommand.deploymentName = arg3;
-              if(argv["key"]){
+              if (argv["key"]) {
                 deploymentAddCommand.key = argv["key"] as any;
               }
-
             }
             break;
 

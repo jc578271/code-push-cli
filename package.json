@@ -1,7 +1,7 @@
 {
   "name": "@johnhaup/code-push-cli",
   "version": "0.0.1",
-  "description": "Management CLI for the CodePush service",
+  "description": "Fork of Microsoft's deprecated CodePush service cli",
   "main": "./script/cli.js",
   "scripts": {
     "start": "node ./bin/script/cli.js",
@@ -11,13 +11,13 @@
     "lint:fix": "npx eslint ./script/**/*.ts --fix"
   },
   "bin": {
-    "code-push-standalone": "./bin/script/cli.js"
+    "code-push": "./bin/script/cli.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/johnhaup/code-push-cli"
   },
-  "author": "Microsoft",
+  "author": "https://github.com/johnhaup",
   "dependencies": {
     "backslash": "^0.2.0",
     "chalk": "^4.1.2",
