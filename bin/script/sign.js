@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = sign;
 const fs = require("fs/promises");
 const hashUtils = require("./hash-utils");
 const path = require("path");
@@ -66,4 +67,3 @@ async function sign(privateKeyPath, updateContentsPath) {
         });
     });
 }
-exports.default = sign;

@@ -2,7 +2,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runReactNativeBundleCommand = exports.releaseReact = exports.release = exports.execute = exports.deploymentList = exports.createEmptyTempReleaseFolder = exports.confirm = exports.execSync = exports.spawn = exports.sdk = exports.log = void 0;
+exports.runReactNativeBundleCommand = exports.releaseReact = exports.release = exports.deploymentList = exports.createEmptyTempReleaseFolder = exports.confirm = exports.execSync = exports.spawn = exports.sdk = exports.log = void 0;
+exports.execute = execute;
 const AccountManager = require("./management-sdk");
 const childProcess = require("child_process");
 const debug_1 = require("./commands/debug");
@@ -424,7 +425,6 @@ function execute(command) {
         }
     });
 }
-exports.execute = execute;
 function getTotalActiveFromDeploymentMetrics(metrics) {
     let totalActive = 0;
     Object.keys(metrics).forEach((label) => {
@@ -1149,15 +1149,65 @@ function requestAccessKey() {
         });
     });
 }
+// Modified runReactNativeBundleCommand function for command-executor.ts for monorepo
 const runReactNativeBundleCommand = (bundleName, development, entryFile, outputFolder, platform, sourcemapOutput) => {
     const reactNativeBundleArgs = [];
     const envNodeArgs = process.env.CODE_PUSH_NODE_ARGS;
     if (typeof envNodeArgs !== "undefined") {
         Array.prototype.push.apply(reactNativeBundleArgs, envNodeArgs.trim().split(/\s+/));
     }
-    const isOldCLI = fs.existsSync(path.join("node_modules", "react-native", "local-cli", "cli.js"));
+    // Find React Native CLI location in a way that works with monorepos
+    let cliPath;
+    try {
+        // First attempt: Try using require.resolve to find React Native package location
+        const rnPackageJsonPath = require.resolve('react-native/package.json', {
+            paths: [
+                process.cwd(),
+                // Add potential monorepo paths
+                path.join(process.cwd(), '..', '..', 'node_modules'),
+                path.join(process.cwd(), '..', 'node_modules'),
+                // Add global node_modules as fallback
+                path.join(process.env.HOME || process.env.USERPROFILE, 'node_modules')
+            ]
+        });
+        const rnDir = path.dirname(rnPackageJsonPath);
+        // Check if we're dealing with older or newer React Native versions
+        const oldCliPath = path.join(rnDir, 'local-cli', 'cli.js');
+        const newCliPath = path.join(rnDir, 'cli.js');
+        if (fs.existsSync(oldCliPath)) {
+            cliPath = oldCliPath;
+        }
+        else if (fs.existsSync(newCliPath)) {
+            cliPath = newCliPath;
+        }
+        else {
+            throw new Error("Could not find React Native CLI in the resolved package");
+        }
+    }
+    catch (error) {
+        // Second attempt: Try new React Native CLI (@react-native-community/cli)
+        try {
+            cliPath = require.resolve('@react-native-community/cli/build/bin.js', {
+                paths: [process.cwd(), path.join(process.cwd(), '..', 'node_modules')]
+            });
+        }
+        catch (communityCliError) {
+            // Third attempt: Check for new React Native CLI structure
+            try {
+                const rnCliPath = require.resolve('react-native/node_modules/.bin/react-native', {
+                    paths: [process.cwd(), path.join(process.cwd(), '..', 'node_modules')]
+                });
+                cliPath = rnCliPath;
+            }
+            catch (newCliError) {
+                throw new Error("Could not find the React Native CLI. Make sure you have react-native installed in your project.\n" +
+                    "Original error: " + error.message);
+            }
+        }
+    }
+    (0, exports.log)(chalk.cyan('Using React Native CLI from: ' + cliPath));
     Array.prototype.push.apply(reactNativeBundleArgs, [
-        isOldCLI ? path.join("node_modules", "react-native", "local-cli", "cli.js") : path.join("node_modules", "react-native", "cli.js"),
+        cliPath,
         "bundle",
         "--assets-dest",
         outputFolder,

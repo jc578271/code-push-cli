@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
 const childProcess = require("child_process");
 const moment = require("moment");
 const path = require("path");
@@ -122,4 +123,3 @@ function default_1(command) {
         }
     });
 }
-exports.default = default_1;

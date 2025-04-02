@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReactNativeVersion = exports.directoryExistsSync = exports.getiOSHermesEnabled = exports.getAndroidHermesEnabled = exports.runHermesEmitBinaryCommand = exports.isValidVersion = void 0;
+exports.isValidVersion = isValidVersion;
+exports.runHermesEmitBinaryCommand = runHermesEmitBinaryCommand;
+exports.getAndroidHermesEnabled = getAndroidHermesEnabled;
+exports.getiOSHermesEnabled = getiOSHermesEnabled;
+exports.directoryExistsSync = directoryExistsSync;
+exports.getReactNativeVersion = getReactNativeVersion;
 const fs = require("fs");
 const chalk = require("chalk");
 const path = require("path");
@@ -11,7 +16,6 @@ const g2js = require("gradle-to-js/lib/parser");
 function isValidVersion(version) {
     return !!(0, semver_1.valid)(version) || /^\d+\.\d+$/.test(version);
 }
-exports.isValidVersion = isValidVersion;
 async function runHermesEmitBinaryCommand(bundleName, outputFolder, sourcemapOutput, extraHermesFlags, gradleFile) {
     const hermesArgs = [];
     const envNodeArgs = process.env.CODE_PUSH_NODE_ARGS;
@@ -102,7 +106,6 @@ async function runHermesEmitBinaryCommand(bundleName, outputFolder, sourcemapOut
         });
     });
 }
-exports.runHermesEmitBinaryCommand = runHermesEmitBinaryCommand;
 function parseBuildGradleFile(gradleFile) {
     let buildGradlePath = path.join("android", "app");
     if (gradleFile) {
@@ -133,7 +136,6 @@ function getAndroidHermesEnabled(gradleFile) {
         return Array.from(buildGradle["project.ext.react"] || []).some((line) => /^enableHermes\s{0,}:\s{0,}true/.test(line));
     });
 }
-exports.getAndroidHermesEnabled = getAndroidHermesEnabled;
 function getiOSHermesEnabled(podFile) {
     let podPath = path.join("ios", "Podfile");
     if (podFile) {
@@ -150,7 +152,6 @@ function getiOSHermesEnabled(podFile) {
         throw error;
     }
 }
-exports.getiOSHermesEnabled = getiOSHermesEnabled;
 function getHermesOSBin() {
     switch (process.platform) {
         case "win32":
@@ -228,7 +229,6 @@ function directoryExistsSync(dirname) {
     }
     return false;
 }
-exports.directoryExistsSync = directoryExistsSync;
 function getReactNativeVersion() {
     let packageJsonFilename;
     let projectPackageJson;
@@ -246,4 +246,3 @@ function getReactNativeVersion() {
     return ((projectPackageJson.dependencies && projectPackageJson.dependencies["react-native"]) ||
         (projectPackageJson.devDependencies && projectPackageJson.devDependencies["react-native"]));
 }
-exports.getReactNativeVersion = getReactNativeVersion;

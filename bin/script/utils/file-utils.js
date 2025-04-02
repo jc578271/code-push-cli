@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.normalizePath = exports.fileDoesNotExistOrIsDirectory = exports.copyFileToTmpDir = exports.fileExists = exports.isDirectory = exports.isBinaryOrZip = void 0;
+exports.isBinaryOrZip = isBinaryOrZip;
+exports.isDirectory = isDirectory;
+exports.fileExists = fileExists;
+exports.copyFileToTmpDir = copyFileToTmpDir;
+exports.fileDoesNotExistOrIsDirectory = fileDoesNotExistOrIsDirectory;
+exports.normalizePath = normalizePath;
 const fs = require("fs");
 const path = require("path");
 const rimraf = require("rimraf");
@@ -8,11 +13,9 @@ const temp = require("temp");
 function isBinaryOrZip(path) {
     return path.search(/\.zip$/i) !== -1 || path.search(/\.apk$/i) !== -1 || path.search(/\.ipa$/i) !== -1;
 }
-exports.isBinaryOrZip = isBinaryOrZip;
 function isDirectory(path) {
     return fs.statSync(path).isDirectory();
 }
-exports.isDirectory = isDirectory;
 function fileExists(file) {
     try {
         return fs.statSync(file).isFile();
@@ -21,7 +24,6 @@ function fileExists(file) {
         return false;
     }
 }
-exports.fileExists = fileExists;
 ;
 function copyFileToTmpDir(filePath) {
     if (!isDirectory(filePath)) {
@@ -33,7 +35,6 @@ function copyFileToTmpDir(filePath) {
         return outputFolderPath;
     }
 }
-exports.copyFileToTmpDir = copyFileToTmpDir;
 function fileDoesNotExistOrIsDirectory(path) {
     try {
         return isDirectory(path);
@@ -42,9 +43,7 @@ function fileDoesNotExistOrIsDirectory(path) {
         return true;
     }
 }
-exports.fileDoesNotExistOrIsDirectory = fileDoesNotExistOrIsDirectory;
 function normalizePath(filePath) {
     //replace all backslashes coming from cli running on windows machines by slashes
     return filePath.replace(/\\/g, "/");
 }
-exports.normalizePath = normalizePath;

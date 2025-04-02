@@ -8,66 +8,14 @@ The goal of this repo is to cleanup and extend the existing `code-push-standalon
 
 PRs welcome!
 
-## Installation
-
-```bash
-npm install -g @johnhaup/code-push-cli
-```
-
-## Local Development
-
-You can easily set up a mock server and test changes against it.
-If you're using VSCode and GitHub, follow these steps:
-
-#### Server
-
-1. Clone the [Code Push Server](https://github.com/microsoft/code-push-server/tree/main/api#codepush-server) repository to your local machine
-2. Copy the `.env.example` file to a new file named `.env` in the root directory:
-
-```bash
-cp .env.example .env
-```
-
-3. Create a [GitHub OAuth app](https://github.com/settings/developers)
-4. Update the following in your `.env`:
-
-```bash
-GITHUB_CLIENT_ID= # From your GitHub OAuth app
-GITHUB_CLIENT_SECRET= # From your GitHub OAuth app
-EMULATED=true
-```
-
-3. Install all necessary dependencies:
-
-```bash
-npm install
-```
-
-4. Compile the server code:
-
-```bash
-npm run build
-```
-
-5. Install [Azurite VSCode extension](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
-6. Run `Azurite Start` from VSCode's command palette
-7. Run you local server:
-
-```bash
-npm run start:env
-```
-
-#### CLI
-
-Back in this repo, you can build the cli locally and run commands with the `npm run code-push` prefix:
+#### Install
 
 ```bash
 # Build your changes
 npm run build
 
-# Interact with local server
-npm run code-push register
-npm run code-push login
+# link globally to npm
+npm link
 # etc
 ```
 

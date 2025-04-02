@@ -2,7 +2,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCommand = exports.showHelp = void 0;
+exports.showHelp = showHelp;
+exports.createCommand = createCommand;
 const yargs = require("yargs");
 const cli = require("./types/cli");
 const chalk = require("chalk");
@@ -31,7 +32,6 @@ function showHelp(showRootDescription) {
         wasHelpShown = true;
     }
 }
-exports.showHelp = showHelp;
 function accessKeyAdd(commandName, yargs) {
     isValidCommand = true;
     yargs
@@ -1075,7 +1075,6 @@ function createCommand() {
         return cmd;
     }
 }
-exports.createCommand = createCommand;
 function isValidRollout(args) {
     const rollout = args["rollout"];
     if (rollout && !ROLLOUT_PERCENTAGE_REGEX.test(rollout)) {
