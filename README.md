@@ -11,12 +11,14 @@ PRs welcome!
 #### Install
 
 ```bash
-# Build your changes
-npm run build
+# Install
+yarn
 
-# link globally to npm
+# Build your changes
+yarn build
+
+# Link globally to npm
 npm link
-# etc
 ```
 
 ## Getting started
