@@ -12,10 +12,10 @@ PRs welcome!
 
 ```bash
 # Install
-yarn
+npm install
 
 # Build your changes
-yarn build
+npm run build
 
 # Link globally to npm
 npm link
